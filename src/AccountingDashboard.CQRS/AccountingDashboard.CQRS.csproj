@@ -1,22 +1,20 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
-    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.1" />
     <PackageReference Include="MediatR" Version="13.0.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.4" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.8" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Accounting.Persistence.InMemory\Accounting.Persistence.InMemory.csproj" />
     <ProjectReference Include="..\AccountingDashboard.Common\AccountingDashboard.Common.csproj" />
     <ProjectReference Include="..\AccountingDashboard.CQRS.Abstractions\AccountingDashboard.CQRS.Abstractions.csproj" />
-    <ProjectReference Include="..\AccountingDashboard.CQRS\AccountingDashboard.CQRS.csproj" />
     <ProjectReference Include="..\AccountingDashboard.Persistence.Abstractions\AccountingDashboard.Persistence.Abstractions.csproj" />
   </ItemGroup>
 

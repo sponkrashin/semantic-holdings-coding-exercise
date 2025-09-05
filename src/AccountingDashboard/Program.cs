@@ -1,5 +1,8 @@
 using System.Reflection;
 
+using Accounting.Persistence.InMemory;
+
+using AccountingDashboard.CQRS;
 using AccountingDashboard.Infrastructure;
 
 using FluentValidation;
@@ -31,6 +34,9 @@ if (corsOrigins?.Any() == true)
         .WithOrigins(corsOrigins)));
 }
 
+builder.Services.AddInMemoryDatabaseContext();
+builder.Services.AddCQRS();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -48,6 +54,8 @@ app.UseCors();
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.MapControllers();
+
+await InitializeDatabase(app.Services);
 
 app.Run();
 
@@ -73,4 +81,11 @@ void RegisterValidatorTypes()
     {
         builder.Services.AddScoped(validatorType, type);
     }
+}
+
+async Task InitializeDatabase(IServiceProvider serviceProvider)
+{
+    using var scope = serviceProvider.CreateScope();
+    var databaseContext = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
+    await databaseContext.Database.EnsureCreatedAsync();
 }
