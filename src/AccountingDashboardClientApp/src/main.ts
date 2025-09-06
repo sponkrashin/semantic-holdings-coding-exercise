@@ -12,5 +12,5 @@ bootstrapApplication(AppComponent, {
     provideZonelessChangeDetection(),
     provideRouter(routes),
     provideHttpClient(),
-  ]
+  ],
 }).catch((err) => console.error(err));

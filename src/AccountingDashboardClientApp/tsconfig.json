@@ -16,8 +16,8 @@
     "module": "preserve",
     "baseUrl": "./",
     "paths": {
-      "src/*": [
-        "src/*"
+      "src/environments/*": [
+        "src/environments/*"
       ],
       "app/*": [
         "src/app/*"

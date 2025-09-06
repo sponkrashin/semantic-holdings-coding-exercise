@@ -5,6 +5,7 @@ import { MatDrawerMode, MatSidenav, MatSidenavModule } from '@angular/material/s
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
+
 import { ComponentBase } from './shared/component.base';
 
 @Component({
@@ -18,20 +19,21 @@ import { ComponentBase } from './shared/component.base';
     MatDividerModule,
   ],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
 })
 export class AppComponent extends ComponentBase implements OnInit {
-  isSmallSize = signal(false);
-  sidenavMode = computed<MatDrawerMode>(() => this.isSmallSize() ? 'over' : 'side');
+  private readonly breakpointObserver = inject(BreakpointObserver);
 
   private readonly sidenav = viewChild<MatSidenav>('sidenav');
 
-  private readonly breakpointObserver = inject(BreakpointObserver);
+  isSmallSize = signal(false);
+  sidenavMode = computed<MatDrawerMode>(() => (this.isSmallSize() ? 'over' : 'side'));
 
   ngOnInit(): void {
-    this.breakpointObserver.observe(Breakpoints.Handset)
+    this.breakpointObserver
+      .observe(Breakpoints.Handset)
       .pipe(this.takeUntilDestroyed())
-      .subscribe(result => {
+      .subscribe((result) => {
         if (!this.isSmallSize() && result.matches) {
           // Close the sidenav when switching to small size
           this.sidenav()?.close();

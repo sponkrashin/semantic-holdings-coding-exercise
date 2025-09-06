@@ -60,3 +60,7 @@ body {
   /* Support for IE. */
   font-feature-settings: 'liga';
 }
+
+.mdc-button {
+  border-radius: 8px !important;
+}
