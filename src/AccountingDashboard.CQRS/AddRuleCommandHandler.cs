@@ -7,19 +7,16 @@ using AccountingDashboard.Persistence.Abstractions.Entities;
 
 using MediatR;
 
-public class AddRuleCommandHandler(IDatabaseContext databaseContext) : IRequestHandler<AddRuleCommand, RuleDTO>
+public class AddRuleCommandHandler(IRulesRepository rulesRepository) : IRequestHandler<AddRuleCommand, RuleDTO>
 {
     public async Task<RuleDTO> Handle(AddRuleCommand request, CancellationToken cancellationToken)
     {
-        var rule = new Rule
+        var rule = await rulesRepository.AddRule(new Rule
         {
             Client = request.Client,
             Program = request.Program,
             DepositDestination = request.DepositDestination,
-        };
-
-        await databaseContext.Rules.AddAsync(rule, cancellationToken);
-        await databaseContext.Commit(cancellationToken);
+        }, cancellationToken);
 
         return new RuleDTO
         {

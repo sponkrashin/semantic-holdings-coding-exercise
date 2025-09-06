@@ -1,32 +1,23 @@
 ﻿namespace AccountingDashboard.CQRS;
 
-using AccountingDashboard.Common;
 using AccountingDashboard.CQRS.Abstractions;
 using AccountingDashboard.CQRS.Abstractions.Models;
 using AccountingDashboard.Persistence.Abstractions;
+using AccountingDashboard.Persistence.Abstractions.Entities;
 
 using MediatR;
 
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-
-public class UpdateRuleCommandHandler(IDatabaseContext databaseContext, ILogger<UpdateRuleCommandHandler> logger) : IRequestHandler<UpdateRuleCommand, RuleDTO>
+public class UpdateRuleCommandHandler(IRulesRepository rulesRepository) : IRequestHandler<UpdateRuleCommand, RuleDTO>
 {
     public async Task<RuleDTO> Handle(UpdateRuleCommand request, CancellationToken cancellationToken)
     {
-        var rule = await databaseContext.Rules.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
-        if (rule is null)
+        var rule = await rulesRepository.UpdateRule(new Rule
         {
-            logger.LogError("Rule with id {Id} is not found", request.Id);
-            throw new NotFoundException($"Rule with id {request.Id} is not found");
-        }
-
-        rule.Client = request.Client;
-        rule.Program = request.Program;
-        rule.DepositDestination = request.DepositDestination;
-        rule.Updated = DateTime.UtcNow;
-
-        await databaseContext.Commit(cancellationToken);
+            Id = request.Id,
+            Client = request.Client,
+            Program = request.Program,
+            DepositDestination = request.DepositDestination,
+        }, cancellationToken);
 
         return new RuleDTO
         {

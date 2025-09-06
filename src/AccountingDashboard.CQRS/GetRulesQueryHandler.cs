@@ -6,14 +6,13 @@ using AccountingDashboard.Persistence.Abstractions;
 
 using MediatR;
 
-using Microsoft.EntityFrameworkCore;
-
-public class GetRulesQueryHandler(IDatabaseContext databaseContext) : IRequestHandler<GetRulesQuery, IEnumerable<RuleDTO>>
+public class GetRulesQueryHandler(IRulesRepository rulesRepository) : IRequestHandler<GetRulesQuery, IEnumerable<RuleDTO>>
 {
     public async Task<IEnumerable<RuleDTO>> Handle(GetRulesQuery request, CancellationToken cancellationToken)
     {
-        var result = await databaseContext.Rules
-            .AsNoTracking()
+        var rules = await rulesRepository.GetRules(cancellationToken);
+
+        return rules
             .Select(x => new RuleDTO
             {
                 Id = x.Id,
@@ -22,7 +21,6 @@ public class GetRulesQueryHandler(IDatabaseContext databaseContext) : IRequestHa
                 DepositDestination = x.DepositDestination,
                 UpdatedDate = x.Updated,
             })
-            .ToArrayAsync(cancellationToken);
-        return result;
+            .ToArray();
     }
 }

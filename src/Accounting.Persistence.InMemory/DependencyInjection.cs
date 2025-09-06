@@ -10,7 +10,11 @@ public static class DependencyInjection
     public static IServiceCollection AddInMemoryDatabaseContext(this IServiceCollection services)
     {
         services.AddDbContext<DatabaseContext>(options => options.UseSqlite("DataSource=file::memory:?cache=shared"), ServiceLifetime.Singleton);
-        services.AddSingleton<IDatabaseContext, DatabaseContext>();
+
+        services
+            .AddSingleton<IDatabaseContext, DatabaseContext>()
+            .AddScoped<IRulesRepository, RulesRepository>();
+
         return services;
     }
 }

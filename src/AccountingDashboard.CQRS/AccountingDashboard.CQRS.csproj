@@ -13,7 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AccountingDashboard.Common\AccountingDashboard.Common.csproj" />
     <ProjectReference Include="..\AccountingDashboard.CQRS.Abstractions\AccountingDashboard.CQRS.Abstractions.csproj" />
     <ProjectReference Include="..\AccountingDashboard.Persistence.Abstractions\AccountingDashboard.Persistence.Abstractions.csproj" />
   </ItemGroup>
