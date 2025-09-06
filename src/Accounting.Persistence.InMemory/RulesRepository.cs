@@ -13,6 +13,8 @@ public class RulesRepository(IDatabaseContext databaseContext, ILogger<RulesRepo
     {
         var result = await databaseContext.Rules
             .AsNoTracking()
+            .OrderBy(x => x.Client)
+            .ThenBy(x => x.Program)
             .ToArrayAsync(cancellationToken);
         return result;
     }
