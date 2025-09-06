@@ -42,7 +42,10 @@ export class RulesTableComponent extends ComponentBase implements OnInit {
   readonly editRuleEvent = output<Rule>({ alias: 'editRule' });
   readonly deleteRuleEvent = output<Rule>({ alias: 'deleteRule' });
 
-  readonly searchControl = new FormControl();
+  readonly paginator = viewChild(MatPaginator);
+  readonly sort = viewChild(MatSort);
+
+  readonly searchControl = new FormControl('');
 
   readonly displayedColumns: string[] = [
     'client',
@@ -52,9 +55,6 @@ export class RulesTableComponent extends ComponentBase implements OnInit {
     'action',
   ];
   readonly dataSource = new MatTableDataSource<Rule>([]);
-
-  paginator = viewChild(MatPaginator);
-  sort = viewChild(MatSort);
 
   private readonly dialog = inject(MatDialog);
 
@@ -83,7 +83,7 @@ export class RulesTableComponent extends ComponentBase implements OnInit {
 
     this.searchControl.valueChanges
       .pipe(this.takeUntilDestroyed(), debounceTime(500))
-      .subscribe((filterValue) => (this.dataSource.filter = filterValue));
+      .subscribe((filterValue) => (this.dataSource.filter = filterValue ?? ''));
   }
 
   applyFilter(event: Event) {

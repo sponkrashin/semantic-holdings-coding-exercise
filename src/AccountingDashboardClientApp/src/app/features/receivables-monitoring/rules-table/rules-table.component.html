@@ -1,9 +1,9 @@
 <div class="search-row">
-  <mat-form-field appearance="outline" [formControl]="searchControl" class="search-field">
+  <mat-form-field appearance="outline" class="search-field">
     <mat-label>Search</mat-label>
     <input
       matInput
-      (keyup)="applyFilter($event)"
+      [formControl]="searchControl"
       placeholder="Search Client, Program, or Deposit Destination"
     />
     <mat-icon matSuffix>search</mat-icon>

@@ -1,5 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { startWith, Subject, switchMap } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { catchError, startWith, Subject, switchMap, tap, throwError } from 'rxjs';
 
 import { ComponentBase } from 'app/shared/component.base';
 import { RulesService } from 'app/core/services/rules.service';
@@ -14,19 +15,32 @@ import { RulesTableComponent } from './rules-table/rules-table.component';
 })
 export class ReceivablesMonitoringComponent extends ComponentBase implements OnInit {
   private readonly rulesService = inject(RulesService);
+  private readonly snackBar = inject(MatSnackBar);
 
   private reloadDataSubject = new Subject<void>();
 
   rules = signal<Rule[]>([]);
+  isLoading = signal(false);
 
   ngOnInit(): void {
     this.reloadDataSubject
       .pipe(
         startWith(null),
         this.takeUntilDestroyed(),
-        switchMap(() => this.rulesService.getRules())
+        tap(() => this.isLoading.set(true)),
+        switchMap(() => this.rulesService.getRules()),
+        catchError((err) => {
+          this.isLoading.set(false);
+          this.snackBar.open('Something went wrong. Please, refresh the page.', 'Dismiss', {
+            duration: 5000,
+          });
+          return throwError(() => err);
+        })
       )
-      .subscribe((rules) => this.rules.set(rules));
+      .subscribe((rules) => {
+        this.isLoading.set(false);
+        this.rules.set(rules);
+      });
   }
 
   addRule(rule: Rule) {
