@@ -9,10 +9,15 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInMemoryDatabaseContext(this IServiceCollection services)
     {
-        services.AddDbContext<DatabaseContext>(options => options.UseSqlite("DataSource=file::memory:?cache=shared"), ServiceLifetime.Singleton);
+        services.AddDbContext<DatabaseContext>(options => options.UseSqlite("DataSource=file::memory:?cache=shared"));
 
         services
-            .AddSingleton<IDatabaseContext, DatabaseContext>()
+            .AddScoped<IDatabaseContext, DatabaseContext>(provider =>
+            {
+                var databaseContext = provider.GetRequiredService<DatabaseContext>();
+                databaseContext.Database.EnsureCreated();
+                return databaseContext;
+            })
             .AddScoped<IRulesRepository, RulesRepository>();
 
         return services;

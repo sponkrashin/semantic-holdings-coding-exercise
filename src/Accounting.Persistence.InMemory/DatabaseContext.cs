@@ -35,7 +35,7 @@ public class DatabaseContext : DbContext, IDatabaseContext
 
         var rules = new List<Rule>();
 
-        for (var i = 0; i < 50; ++i)
+        for (var i = 0; i < 20; ++i)
         {
             rules.Add(new Rule
             {

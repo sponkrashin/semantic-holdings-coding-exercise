@@ -55,8 +55,6 @@ app.UseCors();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.MapControllers();
 
-await InitializeDatabase(app.Services);
-
 app.Run();
 
 return;
@@ -81,11 +79,4 @@ void RegisterValidatorTypes()
     {
         builder.Services.AddScoped(validatorType, type);
     }
-}
-
-async Task InitializeDatabase(IServiceProvider serviceProvider)
-{
-    using var scope = serviceProvider.CreateScope();
-    var databaseContext = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
-    await databaseContext.Database.EnsureCreatedAsync();
 }
