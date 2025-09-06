@@ -1,0 +1,29 @@
+<div class="container">
+  <h2 mat-dialog-title>{{ isEditForm() ? 'Edit Rule' : 'Add Rule' }}</h2>
+  <form [formGroup]="form" (ngSubmit)="save()" class="form">
+    <mat-form-field appearance="outline">
+      <mat-label>Client</mat-label>
+      <input matInput formControlName="client" required />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Program</mat-label>
+      <input matInput formControlName="program" required />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Deposit Destination</mat-label>
+      <input
+        matInput
+        formControlName="depositDestination"
+        required
+        placeholder="e.g. PayPal 1234"
+      />
+      <mat-hint>Format: Provider XXXX</mat-hint>
+    </mat-form-field>
+    <div class="form-actions">
+      <button matButton="outlined" type="button" (click)="cancel()">Cancel</button>
+      <button matButton="filled" color="primary" type="submit" [disabled]="form.invalid">
+        Save
+      </button>
+    </div>
+  </form>
+</div>

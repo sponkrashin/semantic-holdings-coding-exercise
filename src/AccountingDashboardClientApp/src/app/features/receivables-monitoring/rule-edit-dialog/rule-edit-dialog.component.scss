@@ -1,0 +1,19 @@
+.container {
+  margin: 8px;
+}
+
+form {
+  padding: 8px 0;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}

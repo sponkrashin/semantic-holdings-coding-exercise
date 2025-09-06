@@ -1,0 +1,62 @@
+<div class="search-row">
+  <mat-form-field appearance="outline" [formControl]="searchControl" class="search-field">
+    <mat-label>Search</mat-label>
+    <input
+      matInput
+      (keyup)="applyFilter($event)"
+      placeholder="Search Client, Program, or Deposit Destination"
+    />
+    <mat-icon matSuffix>search</mat-icon>
+  </mat-form-field>
+  <div class="filler"></div>
+  <button mat-raised-button color="primary" (click)="editRule(null)">Add Rule</button>
+</div>
+<div>
+  <table mat-table [dataSource]="dataSource" matSort>
+    <!-- Client Column -->
+    <ng-container matColumnDef="client">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Client</th>
+      <td mat-cell *matCellDef="let rule">{{ rule.client }}</td>
+    </ng-container>
+
+    <!-- Program Column -->
+    <ng-container matColumnDef="program">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Program</th>
+      <td mat-cell *matCellDef="let rule">{{ rule.program }}</td>
+    </ng-container>
+
+    <!-- Deposit Destination Column -->
+    <ng-container matColumnDef="depositDestination">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Deposit Destination</th>
+      <td mat-cell *matCellDef="let rule">{{ rule.depositDestination }}</td>
+    </ng-container>
+
+    <!-- Updated Column -->
+    <ng-container matColumnDef="updatedDate">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Updated</th>
+      <td mat-cell *matCellDef="let rule">{{ rule.updatedDate | date : 'medium' }}</td>
+    </ng-container>
+
+    <!-- Actions Column -->
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef>Action</th>
+      <td mat-cell *matCellDef="let rule">
+        <button mat-icon-button color="primary" (click)="editRule(rule)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="deleteRule(rule)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+
+  <mat-paginator
+    [pageSizeOptions]="[5, 10, 20, 50]"
+    [pageSize]="20"
+    showFirstLastButtons
+  ></mat-paginator>
+</div>

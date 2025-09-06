@@ -1,0 +1,17 @@
+.search-row {
+  display: flex;
+  padding: 8px;
+}
+
+.search-field {
+  border-radius: 8px;
+  width: 500px;
+}
+
+.filler {
+  flex: 1;
+}
+
+th {
+  font-weight: 600;
+}
