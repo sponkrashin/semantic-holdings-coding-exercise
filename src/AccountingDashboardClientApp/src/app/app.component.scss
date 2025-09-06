@@ -1,0 +1,32 @@
+.sidenav-container {
+  height: 100vh;
+}
+
+.sidebar {
+  width: 240px;
+  border-radius: 0;
+}
+
+.menu-item {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.menu-subitem {
+  &.active {
+    background-color: lightgray;
+  }
+}
+
+.menu-subitem-text {
+  margin-left: 8px;
+  font-weight: 500;
+}
+
+.content {
+  margin: 0 20px;
+}
+
+.sidebar-open-button {
+  cursor: pointer;
+}
